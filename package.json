@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/orchemi/ascii-react"
   },
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A React component for displaying ASCII art",
   "main": "dist/ascii-react.umd.js",
   "module": "dist/ascii-react.es.js",
