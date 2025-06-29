@@ -10,8 +10,8 @@ function App() {
       resolution={96}
       fontSize={8}
       charInterval={100}
-      color={"#b6b6e2"} // auto, mono, #RRGGBB
-      charsRandomLevel={"none"} // none, group, all
+      color={"auto"} // auto, mono, #RRGGBB
+      charsRandomLevel={"group"} // none, group, all
     />
   );
 }
