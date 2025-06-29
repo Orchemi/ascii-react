@@ -1,25 +1,36 @@
-import AsciiImage from "./AsciiImage";
-import AsciiVideo from "./AsciiVideo";
+import AsciiImage from "./ascii-image/AsciiImage";
+import AsciiVideo from "./ascii-video/AsciiVideo";
+import { defaultCharList, defaultCharMatrix } from "./asciiMedia.constant";
+import type { AsciiMediaOptionalProps } from "./asciiMedia.type";
 
-export interface AsciiMediaProps {
-  src: string;
-  mediaType: "image" | "video";
-  resolution?: number;
-  fontSize?: number;
-  charInterval?: number;
-  colored?: boolean;
-  charsRandomLevel?: "none" | "group" | "all";
-  charList?: string[];
-  charMatrix?: string[][];
-}
+export default function AsciiMedia(props: AsciiMediaOptionalProps) {
+  const { mediaType, ...optionalRest } = props;
+  const {
+    resolution = 96,
+    fontSize = 8,
+    charInterval = 100,
+    colored = true,
+    charsRandomLevel = "none",
+    charList = defaultCharList,
+    charMatrix = defaultCharMatrix,
+  } = optionalRest;
 
-export default function AsciiMedia(props: AsciiMediaProps) {
-  const { mediaType, ...rest } = props;
+  const requiredRest = {
+    src: props.src,
+    resolution,
+    fontSize,
+    charInterval,
+    colored,
+    charsRandomLevel,
+    charList,
+    charMatrix,
+  };
+
   if (mediaType === "image") {
-    return <AsciiImage {...rest} />;
+    return <AsciiImage {...requiredRest} />;
   }
   if (mediaType === "video") {
-    return <AsciiVideo {...rest} />;
+    return <AsciiVideo {...requiredRest} />;
   }
   return null;
 }

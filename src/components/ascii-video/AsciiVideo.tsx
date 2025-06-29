@@ -1,22 +1,19 @@
 import { useEffect, useRef, useCallback } from "react";
-import { defaultCharList, defaultCharMatrix } from "./asciiMedia.constant";
-import type { AsciiMediaProps } from "./AsciiMedia";
-import { getAsciiCanvasContext, drawAsciiToCanvas } from "./asciiMedia.util";
-import { getImageAspect } from "./AsciiImage.util";
+import type { AsciiMediaRequiredProps } from "../asciiMedia.type";
+import { getAsciiCanvasContext, drawAsciiToCanvas } from "../AsciiMedia.util";
+import { getVideoAspect } from "./AsciiVideo.util";
 
-function AsciiImage(props: Omit<AsciiMediaProps, "mediaType">) {
-  const {
-    src,
-    resolution = 96,
-    fontSize = 8,
-    charInterval = 100,
-    colored = true,
-    charsRandomLevel = "none",
-    charList = defaultCharList,
-    charMatrix = defaultCharMatrix,
-  } = props;
-
-  const imgRef = useRef<HTMLImageElement | null>(null);
+function AsciiVideo({
+  src,
+  resolution,
+  fontSize,
+  charInterval,
+  colored,
+  charsRandomLevel,
+  charList,
+  charMatrix,
+}: AsciiMediaRequiredProps) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const animationId = useRef<number | null>(null);
 
@@ -25,18 +22,15 @@ function AsciiImage(props: Omit<AsciiMediaProps, "mediaType">) {
     if (!canvas) return;
     const ctx = getAsciiCanvasContext(canvas);
     if (!ctx) return;
-    const img = imgRef.current;
-    if (!img || !img.naturalWidth) {
-      animationId.current = window.setTimeout(drawAscii, charInterval);
-      return;
-    }
-    const aspect = getImageAspect(img);
+    const video = videoRef.current;
+    if (!video || !video.videoWidth || video.paused || video.ended) return;
+    const aspect = getVideoAspect(video);
     const w = resolution;
     const h = Math.round(w / aspect);
     canvas.width = w * fontSize;
     canvas.height = h * fontSize;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0, w, h);
+    ctx.drawImage(video, 0, 0, w, h);
     const data = ctx.getImageData(0, 0, w, h).data;
     drawAsciiToCanvas(
       ctx,
@@ -51,7 +45,6 @@ function AsciiImage(props: Omit<AsciiMediaProps, "mediaType">) {
     );
     animationId.current = window.setTimeout(drawAscii, charInterval);
   }, [
-    src,
     resolution,
     fontSize,
     charInterval,
@@ -62,13 +55,19 @@ function AsciiImage(props: Omit<AsciiMediaProps, "mediaType">) {
   ]);
 
   useEffect(() => {
-    const img = imgRef.current;
-    if (!img) return;
-    img.onload = () => drawAscii();
-    if (img.complete) drawAscii();
+    const video = videoRef.current;
+    if (!video) return;
+    video.onloadeddata = () => {
+      video.play();
+      drawAscii();
+    };
+    if (video.readyState >= 2) {
+      video.play();
+      drawAscii();
+    }
     return () => {
       if (animationId.current) clearTimeout(animationId.current);
-      if (img) img.onload = null;
+      if (video) video.onloadeddata = null;
     };
   }, [drawAscii]);
 
@@ -76,10 +75,13 @@ function AsciiImage(props: Omit<AsciiMediaProps, "mediaType">) {
   return (
     <>
       <canvas ref={canvasRef} />
-      <img
-        ref={imgRef}
+      <video
+        ref={videoRef}
         src={src}
-        alt="ascii"
+        autoPlay
+        muted
+        loop
+        playsInline
         crossOrigin="anonymous"
         style={{ display: "none" }}
       />
@@ -87,4 +89,4 @@ function AsciiImage(props: Omit<AsciiMediaProps, "mediaType">) {
   );
 }
 
-export default AsciiImage;
+export default AsciiVideo;
