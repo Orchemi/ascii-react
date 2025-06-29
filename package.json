@@ -1,5 +1,11 @@
 {
   "name": "ascii-react",
+  "author": "Seunghun Park",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/orchemi/ascii-react"
+  },
   "version": "0.0.1",
   "description": "A React component for displaying ASCII art",
   "main": "dist/ascii-react.umd.js",
