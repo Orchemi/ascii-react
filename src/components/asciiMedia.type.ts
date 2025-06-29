@@ -28,11 +28,14 @@ export interface AsciiMediaOptionalProps {
    */
   charInterval?: number;
   /**
-   * 컬러 아스키 여부
-   * @default true
-   * @type {boolean}
+   * 아스키 코드 색상 처리 방식
+   * @default 'auto'
+   * @type {'auto' | 'mono' | `#${string}`}
+   * - 'auto': 원본 이미지/비디오의 색상 사용
+   * - 'mono': 흑백(밝기값)으로 출력
+   * - hash string: '#RRGGBB' 등 해시 색상값을 지정하면 해당 색상으로 출력
    */
-  colored?: boolean;
+  color?: "auto" | "mono" | `#${string}`;
   /**
    * 아스키 문자 랜덤화 수준
    * @default "none"

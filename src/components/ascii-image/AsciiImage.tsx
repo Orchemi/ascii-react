@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback } from "react";
-import { getAsciiCanvasContext, drawAsciiToCanvas } from "../AsciiMedia.util";
+import { getAsciiCanvasContext } from "../AsciiMedia.util";
 import { getImageAspect } from "./AsciiImage.util";
 import type { AsciiMediaRequiredProps } from "../asciiMedia.type";
 
@@ -8,7 +8,7 @@ function AsciiImage({
   resolution,
   fontSize,
   charInterval,
-  colored,
+  color,
   charsRandomLevel,
   charList,
   charMatrix,
@@ -35,23 +35,50 @@ function AsciiImage({
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(img, 0, 0, w, h);
     const data = ctx.getImageData(0, 0, w, h).data;
-    drawAsciiToCanvas(
-      ctx,
-      data,
-      w,
-      h,
-      fontSize,
-      colored,
-      charsRandomLevel,
-      charList,
-      charMatrix
-    );
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.textBaseline = "top";
+    ctx.textAlign = "left";
+    ctx.font = `${fontSize}px monospace`;
+    let i = 0;
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++, i++) {
+        const idx = (x + y * w) * 4;
+        const [r, g, b] = data.slice(idx, idx + 3);
+        const brightness = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+        const brightnessNorm = brightness / 255;
+        let char = " ";
+        if (charsRandomLevel === "none") {
+          const charIndex = Math.floor(
+            (1 - brightnessNorm) * (charList.length - 1)
+          );
+          char = charList[charIndex];
+        } else if (charsRandomLevel === "group") {
+          const groupIndex = Math.floor(
+            (1 - brightnessNorm) * (charMatrix.length - 1)
+          );
+          const group = charMatrix[groupIndex];
+          char = group[Math.floor(Math.random() * group.length)];
+        } else {
+          char = charList[Math.floor(Math.random() * charList.length)];
+        }
+        if (color === "auto") {
+          ctx.fillStyle = `rgb(${r},${g},${b})`;
+        } else if (color === "mono") {
+          ctx.fillStyle = `rgb(${brightness},${brightness},${brightness})`;
+        } else if (typeof color === "string" && color.startsWith("#")) {
+          ctx.fillStyle = color;
+        } else {
+          ctx.fillStyle = `rgb(${r},${g},${b})`;
+        }
+        ctx.fillText(char ?? " ", x * fontSize, y * fontSize);
+      }
+    }
     animationId.current = window.setTimeout(drawAscii, charInterval);
   }, [
     resolution,
     fontSize,
     charInterval,
-    colored,
+    color,
     charsRandomLevel,
     charList,
     charMatrix,

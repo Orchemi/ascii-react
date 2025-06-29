@@ -10,7 +10,7 @@ function App() {
       resolution={96}
       fontSize={8}
       charInterval={100}
-      colored={true} // true, false
+      color={"#b6b6e2"} // auto, mono, #RRGGBB
       charsRandomLevel={"none"} // none, group, all
     />
   );
