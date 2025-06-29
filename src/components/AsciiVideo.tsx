@@ -1,6 +1,8 @@
 import { useEffect, useRef, useCallback } from "react";
 import { defaultCharList, defaultCharMatrix } from "./asciiMedia.constant";
 import type { AsciiMediaProps } from "./AsciiMedia";
+import { getAsciiCanvasContext, drawAsciiToCanvas } from "./asciiMedia.util";
+import { getVideoAspect } from "./AsciiVideo.util";
 
 function AsciiVideo(props: Omit<AsciiMediaProps, "mediaType">) {
   const {
@@ -21,11 +23,11 @@ function AsciiVideo(props: Omit<AsciiMediaProps, "mediaType">) {
   const drawAscii = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = getAsciiCanvasContext(canvas);
     if (!ctx) return;
     const video = videoRef.current;
     if (!video || !video.videoWidth || video.paused || video.ended) return;
-    const aspect = video.videoWidth / video.videoHeight || 3;
+    const aspect = getVideoAspect(video);
     const w = resolution;
     const h = Math.round(w / aspect);
     canvas.width = w * fontSize;
@@ -33,40 +35,17 @@ function AsciiVideo(props: Omit<AsciiMediaProps, "mediaType">) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(video, 0, 0, w, h);
     const data = ctx.getImageData(0, 0, w, h).data;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.textBaseline = "top";
-    ctx.textAlign = "left";
-    ctx.font = `${fontSize}px monospace`;
-    let i = 0;
-    for (let y = 0; y < h; y++) {
-      for (let x = 0; x < w; x++, i++) {
-        const idx = (x + y * w) * 4;
-        const [r, g, b] = data.slice(idx, idx + 3);
-        const brightness = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
-        const brightnessNorm = brightness / 255;
-        let char = " ";
-        if (charsRandomLevel === "none") {
-          const charIndex = Math.floor(
-            (1 - brightnessNorm) * (charList.length - 1)
-          );
-          char = charList[charIndex];
-        } else if (charsRandomLevel === "group") {
-          const groupIndex = Math.floor(
-            (1 - brightnessNorm) * (charMatrix.length - 1)
-          );
-          const group = charMatrix[groupIndex];
-          char = group[Math.floor(Math.random() * group.length)];
-        } else {
-          char = charList[Math.floor(Math.random() * charList.length)];
-        }
-        if (colored) {
-          ctx.fillStyle = `rgb(${r},${g},${b})`;
-        } else {
-          ctx.fillStyle = `rgb(${brightness},${brightness},${brightness})`;
-        }
-        ctx.fillText(char ?? " ", x * fontSize, y * fontSize);
-      }
-    }
+    drawAsciiToCanvas(
+      ctx,
+      data,
+      w,
+      h,
+      fontSize,
+      colored,
+      charsRandomLevel,
+      charList,
+      charMatrix
+    );
     animationId.current = window.setTimeout(drawAscii, charInterval);
   }, [
     src,
