@@ -1,3 +1,10 @@
+import type {
+  AsciiColor,
+  CharsRandomLevel,
+  CharList,
+  CharMatrix,
+} from "./asciiMedia.type";
+
 // 공통 유틸 함수들
 
 // 캔버스 2D 컨텍스트 얻기
@@ -15,9 +22,9 @@ export function getBrightness(r: number, g: number, b: number): number {
 // 아스키 문자 선택
 export function getAsciiChar(
   brightnessNorm: number,
-  charsRandomLevel: "none" | "group" | "all",
-  charList: string[],
-  charMatrix: string[][]
+  charsRandomLevel: CharsRandomLevel,
+  charList: CharList,
+  charMatrix: CharMatrix
 ): string {
   if (charsRandomLevel === "none") {
     const charIndex = Math.floor((1 - brightnessNorm) * (charList.length - 1));
@@ -82,7 +89,7 @@ export function drawAsciiToCanvas(
  * @param brightness 밝기값(0~255)
  */
 export function getAsciiFillStyle(
-  color: "auto" | "mono" | `#${string}`,
+  color: AsciiColor,
   r: number,
   g: number,
   b: number,
@@ -122,10 +129,10 @@ export function drawAsciiChar(
   g: number,
   b: number,
   brightness: number,
-  charsRandomLevel: "none" | "group" | "all",
-  charList: string[],
-  charMatrix: string[][],
-  color: "auto" | "mono" | `#${string}`
+  charsRandomLevel: CharsRandomLevel,
+  charList: CharList,
+  charMatrix: CharMatrix,
+  color: AsciiColor
 ) {
   const brightnessNorm = brightness / 255;
   let char = " ";
@@ -165,10 +172,10 @@ export function drawAsciiFromSource(
   resolution: number,
   fontSize: number,
   charInterval: number,
-  charsRandomLevel: "none" | "group" | "all",
-  charList: string[],
-  charMatrix: string[][],
-  color: "auto" | "mono" | `#${string}`,
+  charsRandomLevel: CharsRandomLevel,
+  charList: CharList,
+  charMatrix: CharMatrix,
+  color: AsciiColor,
   animationId: { current: number | null },
   drawAscii: () => void
 ) {
