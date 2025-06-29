@@ -1,7 +1,13 @@
 {
   "name": "ascii-react",
-  "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "description": "A React component for displaying ASCII art",
+  "main": "dist/ascii-react.umd.js",
+  "module": "dist/ascii-react.es.js",
+  "types": "dist/ascii-react.d.ts",
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
