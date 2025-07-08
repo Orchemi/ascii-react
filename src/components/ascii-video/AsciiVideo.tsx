@@ -14,6 +14,7 @@ function AsciiVideo({
   backgroundColor,
   ignoreBright,
   invert,
+  manualCharColors,
 }: AsciiMediaRequiredProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -40,7 +41,8 @@ function AsciiVideo({
       drawAscii,
       backgroundColor,
       ignoreBright,
-      invert
+      invert,
+      manualCharColors
     );
   }, [
     resolution,
@@ -53,6 +55,7 @@ function AsciiVideo({
     backgroundColor,
     ignoreBright,
     invert,
+    manualCharColors,
   ]);
 
   useEffect(() => {
