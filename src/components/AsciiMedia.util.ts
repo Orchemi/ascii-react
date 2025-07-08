@@ -3,6 +3,7 @@ import type {
   CharsRandomLevel,
   CharList,
   CharMatrix,
+  HexColor,
 } from "./asciiMedia.type";
 
 // 공통 유틸 함수들
@@ -82,7 +83,7 @@ export function drawAsciiToCanvas(
 
 /**
  * 아스키 픽셀의 fillStyle을 결정
- * @param color 'auto' | 'mono' | `#${string}`
+ * @param color 'auto' | 'mono' | `HexColor`
  * @param r R값(0~255)
  * @param g G값(0~255)
  * @param b B값(0~255)
@@ -177,7 +178,8 @@ export function drawAsciiFromSource(
   charMatrix: CharMatrix,
   color: AsciiColor,
   animationId: { current: number | null },
-  drawAscii: () => void
+  drawAscii: () => void,
+  backgroundColor?: HexColor
 ) {
   const aspect =
     "naturalWidth" in source
@@ -187,10 +189,22 @@ export function drawAsciiFromSource(
   const h = Math.round(w / aspect);
   ctx.canvas.width = w * fontSize;
   ctx.canvas.height = h * fontSize;
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  // 배경색 칠하기
+  if (backgroundColor) {
+    ctx.fillStyle = backgroundColor;
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  } else {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  }
   ctx.drawImage(source, 0, 0, w, h);
   const data = ctx.getImageData(0, 0, w, h).data;
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  // getImageData 이후, 다시 배경색 칠하기(겹침 방지)
+  if (backgroundColor) {
+    ctx.fillStyle = backgroundColor;
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  } else {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  }
   ctx.textBaseline = "top";
   ctx.textAlign = "left";
   ctx.font = `${fontSize}px monospace`;

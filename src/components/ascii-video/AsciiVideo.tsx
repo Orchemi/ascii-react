@@ -7,10 +7,11 @@ function AsciiVideo({
   resolution,
   fontSize,
   charInterval,
-  color,
+  color = "auto",
   charsRandomLevel,
   charList,
   charMatrix,
+  backgroundColor,
 }: AsciiMediaRequiredProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -34,7 +35,8 @@ function AsciiVideo({
       charMatrix,
       color,
       animationId,
-      drawAscii
+      drawAscii,
+      backgroundColor
     );
   }, [
     resolution,
@@ -44,6 +46,7 @@ function AsciiVideo({
     charsRandomLevel,
     charList,
     charMatrix,
+    backgroundColor,
   ]);
 
   useEffect(() => {

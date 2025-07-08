@@ -13,6 +13,7 @@ export default function AsciiMedia(props: AsciiMediaOptionalProps) {
     charsRandomLevel = "none",
     charList = defaultCharList,
     charMatrix = defaultCharMatrix,
+    backgroundColor = "#00000000",
   } = optionalRest;
 
   const requiredRest = {
@@ -24,6 +25,7 @@ export default function AsciiMedia(props: AsciiMediaOptionalProps) {
     charsRandomLevel,
     charList,
     charMatrix,
+    backgroundColor,
   };
 
   if (mediaType === "image") {

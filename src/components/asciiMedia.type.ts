@@ -1,5 +1,6 @@
 // 주요 타입 별도 정의
-export type AsciiColor = "auto" | "mono" | `#${string}`;
+export type HexColor = `#${string}`;
+export type AsciiColor = "auto" | "mono" | HexColor;
 export type MediaType = "image" | "video";
 export type CharsRandomLevel = "none" | "group" | "all";
 export type CharList = string[];
@@ -64,6 +65,11 @@ export interface AsciiMediaOptionalProps {
    * @type {CharMatrix}
    */
   charMatrix?: CharMatrix;
+  /**
+   * 아스키 아트의 배경색 (hex string, 예: '#000000')
+   * @type {HexColor}
+   */
+  backgroundColor?: HexColor;
 }
 
 /**

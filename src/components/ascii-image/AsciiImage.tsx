@@ -7,10 +7,11 @@ function AsciiImage({
   resolution,
   fontSize,
   charInterval,
-  color,
+  color = "auto",
   charsRandomLevel,
   charList,
   charMatrix,
+  backgroundColor,
 }: AsciiMediaRequiredProps) {
   const imgRef = useRef<HTMLImageElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -37,7 +38,8 @@ function AsciiImage({
       charMatrix,
       color,
       animationId,
-      drawAscii
+      drawAscii,
+      backgroundColor
     );
   }, [
     resolution,
@@ -47,6 +49,7 @@ function AsciiImage({
     charsRandomLevel,
     charList,
     charMatrix,
+    backgroundColor,
   ]);
 
   useEffect(() => {
