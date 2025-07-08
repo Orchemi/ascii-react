@@ -179,7 +179,8 @@ export function drawAsciiFromSource(
   color: AsciiColor,
   animationId: { current: number | null },
   drawAscii: () => void,
-  backgroundColor?: HexColor
+  backgroundColor?: HexColor,
+  ignoreBright: number = 0
 ) {
   const aspect =
     "naturalWidth" in source
@@ -214,6 +215,11 @@ export function drawAsciiFromSource(
       const idx = (x + y * w) * 4;
       const [r, g, b] = data.slice(idx, idx + 3);
       const brightness = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+      const brightnessNorm = brightness / 255;
+      if (brightnessNorm < ignoreBright) {
+        // 공백으로 무시 (ignoreBright가 커질수록 더 많이 필터링)
+        continue;
+      }
       drawAsciiChar(
         ctx,
         x,

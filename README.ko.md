@@ -42,6 +42,7 @@ import AsciiMedia from "ascii-react";
   color="auto" // 'auto' | 'mono' | '#RRGGBB'
   charsRandomLevel="none" // 'none' | 'group' | 'all'
   backgroundColor="#000000" // 캔버스 배경색(hex)
+  ignoreBright={0.15} // 이 밝기 미만은 공백(무시) 처리 (0~1)
 />;
 ```
 
@@ -61,6 +62,7 @@ import AsciiMedia from "ascii-react";
 | `charList`         | `string[]`                    | 기본셋    | 사용할 아스키 문자 리스트            |
 | `charMatrix`       | `string[][]`                  | 기본셋    | 밝기 그룹별 아스키 문자 매트릭스     |
 | `backgroundColor`  | `string`                      | '#000000' | 캔버스 배경색(hex 값, 예: '#000000') |
+| `ignoreBright`     | `number`                      | 0         | 이 밝기 미만은 공백(무시) 처리 (0~1) |
 
 <br />
 

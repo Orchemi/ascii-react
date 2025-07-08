@@ -70,6 +70,13 @@ export interface AsciiMediaOptionalProps {
    * @type {HexColor}
    */
   backgroundColor?: HexColor;
+  /**
+   * 밝기 무시 임계값 (0~1, 해당 값 미만의 밝기는 공백으로 처리)
+   * @default 0
+   * @type {number}
+   * 0: 무시 없음, 1: 거의 모든 영역 무시
+   */
+  ignoreBright?: number;
 }
 
 /**
