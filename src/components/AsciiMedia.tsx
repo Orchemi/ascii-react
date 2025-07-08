@@ -20,6 +20,7 @@ export default function AsciiMedia(props: AsciiMediaOptionalProps) {
     backgroundColor = defaultBackgroundColor,
   } = optionalRest;
   const ignoreBright = props.ignoreBright ?? 0;
+  const invert = props.invert ?? false;
 
   const requiredRest = {
     src: props.src,
@@ -32,6 +33,7 @@ export default function AsciiMedia(props: AsciiMediaOptionalProps) {
     charMatrix,
     backgroundColor,
     ignoreBright,
+    invert,
   };
 
   if (mediaType === "image") {

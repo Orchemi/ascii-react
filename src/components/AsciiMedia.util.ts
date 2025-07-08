@@ -26,15 +26,18 @@ export function getAsciiChar(
   brightnessNorm: number,
   charsRandomLevel: CharsRandomLevel,
   charList: CharList,
-  charMatrix: CharMatrix
+  charMatrix: CharMatrix,
+  invert: boolean = false
 ): string {
   if (charsRandomLevel === "none") {
-    const charIndex = Math.floor((1 - brightnessNorm) * (charList.length - 1));
+    const charIndex = invert
+      ? Math.floor(brightnessNorm * (charList.length - 1))
+      : Math.floor((1 - brightnessNorm) * (charList.length - 1));
     return charList[charIndex];
   } else if (charsRandomLevel === "group") {
-    const groupIndex = Math.floor(
-      (1 - brightnessNorm) * (charMatrix.length - 1)
-    );
+    const groupIndex = invert
+      ? Math.floor(brightnessNorm * (charMatrix.length - 1))
+      : Math.floor((1 - brightnessNorm) * (charMatrix.length - 1));
     const group = charMatrix[groupIndex];
     return group[Math.floor(Math.random() * group.length)];
   } else {
@@ -134,22 +137,17 @@ export function drawAsciiChar(
   charsRandomLevel: CharsRandomLevel,
   charList: CharList,
   charMatrix: CharMatrix,
-  color: AsciiColor
+  color: AsciiColor,
+  invert: boolean = false
 ) {
   const brightnessNorm = brightness / 255;
-  let char = " ";
-  if (charsRandomLevel === "none") {
-    const charIndex = Math.floor((1 - brightnessNorm) * (charList.length - 1));
-    char = charList[charIndex];
-  } else if (charsRandomLevel === "group") {
-    const groupIndex = Math.floor(
-      (1 - brightnessNorm) * (charMatrix.length - 1)
-    );
-    const group = charMatrix[groupIndex];
-    char = group[Math.floor(Math.random() * group.length)];
-  } else {
-    char = charList[Math.floor(Math.random() * charList.length)];
-  }
+  const char = getAsciiChar(
+    brightnessNorm,
+    charsRandomLevel,
+    charList,
+    charMatrix,
+    invert
+  );
   ctx.fillStyle = getAsciiFillStyle(color, r, g, b, brightness);
   ctx.fillText(char ?? " ", x * fontSize, y * fontSize);
 }
@@ -181,7 +179,8 @@ export function drawAsciiFromSource(
   animationId: { current: number | null },
   drawAscii: () => void,
   backgroundColor: HexColor,
-  ignoreBright: number = 0
+  ignoreBright: number = 0,
+  invert: boolean = false
 ) {
   const aspect =
     "naturalWidth" in source
@@ -217,7 +216,8 @@ export function drawAsciiFromSource(
       const idx = (x + y * w) * 4;
       const [r, g, b] = data.slice(idx, idx + 3);
       const brightness = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
-      const brightnessNorm = brightness / 255;
+      let brightnessNorm = brightness / 255;
+      if (invert) brightnessNorm = 1 - brightnessNorm;
       if (brightnessNorm < ignoreBright) {
         // 공백으로 무시 (ignoreBright가 커질수록 더 많이 필터링)
         continue;
@@ -234,7 +234,8 @@ export function drawAsciiFromSource(
         charsRandomLevel,
         charList,
         charMatrix,
-        color
+        color,
+        invert
       );
     }
   }

@@ -78,6 +78,13 @@ export interface AsciiMediaOptionalProps {
    * 0: 무시 없음, 1: 거의 모든 영역 무시
    */
   ignoreBright?: number;
+  /**
+   * 밝기-문자 매핑 반전 (명도 반전)
+   * @default false
+   * @type {boolean}
+   * true: 밝기와 문자 매핑을 반전시킴 (밝은 곳에 진한 문자, 어두운 곳에 공백/획수 적은 문자)
+   */
+  invert?: boolean;
 }
 
 /**
