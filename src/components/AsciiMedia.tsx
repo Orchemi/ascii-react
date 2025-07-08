@@ -1,6 +1,10 @@
 import AsciiImage from "./ascii-image/AsciiImage";
 import AsciiVideo from "./ascii-video/AsciiVideo";
-import { defaultCharList, defaultCharMatrix } from "./asciiMedia.constant";
+import {
+  defaultBackgroundColor,
+  defaultCharList,
+  defaultCharMatrix,
+} from "./asciiMedia.constant";
 import type { AsciiMediaOptionalProps } from "./asciiMedia.type";
 
 export default function AsciiMedia(props: AsciiMediaOptionalProps) {
@@ -13,7 +17,7 @@ export default function AsciiMedia(props: AsciiMediaOptionalProps) {
     charsRandomLevel = "none",
     charList = defaultCharList,
     charMatrix = defaultCharMatrix,
-    backgroundColor = "#00000000",
+    backgroundColor = defaultBackgroundColor,
   } = optionalRest;
   const ignoreBright = props.ignoreBright ?? 0;
 

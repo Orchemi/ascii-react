@@ -9,7 +9,7 @@ function App() {
       fontSize={8}
       charInterval={100}
       color={"auto"} // auto, mono, #RRGGBB
-      backgroundColor={"#00000000"} // #RRGGBB
+      backgroundColor={"#00000000"} // #RRGGBB(default: #00000000)
       charsRandomLevel={"group"} // none, group, all
       ignoreBright={0} // 0~1
     />

@@ -1,3 +1,4 @@
+import { defaultBackgroundColor } from "./asciiMedia.constant";
 import type {
   AsciiColor,
   CharsRandomLevel,
@@ -179,7 +180,7 @@ export function drawAsciiFromSource(
   color: AsciiColor,
   animationId: { current: number | null },
   drawAscii: () => void,
-  backgroundColor?: HexColor,
+  backgroundColor: HexColor,
   ignoreBright: number = 0
 ) {
   const aspect =
@@ -191,7 +192,8 @@ export function drawAsciiFromSource(
   ctx.canvas.width = w * fontSize;
   ctx.canvas.height = h * fontSize;
   // 배경색 칠하기
-  if (backgroundColor) {
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  if (backgroundColor !== defaultBackgroundColor) {
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   } else {
@@ -200,7 +202,7 @@ export function drawAsciiFromSource(
   ctx.drawImage(source, 0, 0, w, h);
   const data = ctx.getImageData(0, 0, w, h).data;
   // getImageData 이후, 다시 배경색 칠하기(겹침 방지)
-  if (backgroundColor) {
+  if (backgroundColor !== defaultBackgroundColor) {
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   } else {

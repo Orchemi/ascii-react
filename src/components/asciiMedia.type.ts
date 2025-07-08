@@ -67,6 +67,7 @@ export interface AsciiMediaOptionalProps {
   charMatrix?: CharMatrix;
   /**
    * 아스키 아트의 배경색 (hex string, 예: '#000000')
+   * @default #00000000
    * @type {HexColor}
    */
   backgroundColor?: HexColor;

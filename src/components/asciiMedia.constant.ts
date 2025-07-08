@@ -1,3 +1,4 @@
+export const defaultBackgroundColor = "#00000000";
 export const defaultCharList: string[] = [
   " ",
   ".",
