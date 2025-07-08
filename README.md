@@ -36,14 +36,18 @@ import AsciiMedia from "ascii-react";
 <AsciiMedia
   src="https://example.com/image.png"
   mediaType="image" // 'image' | 'video'
-  resolution={96} // ASCII resolution (number of columns)
-  fontSize={8} // Font size (px)
-  charInterval={100} // Frame update interval (ms)
+  resolution={96} // number of ASCII chars per row
+  fontSize={8} // font size (px)
+  charInterval={100} // frame update interval (ms)
   color="auto" // 'auto' | 'mono' | '#RRGGBB'
   charsRandomLevel="none" // 'none' | 'group' | 'all'
-  backgroundColor="#000000" // Canvas background color (hex)
-  ignoreBelow={0.15} // Ignore pixels below this brightness (0~1)
-  invert={true} // Invert brightness-to-ASCII mapping (bright = dense char)
+  backgroundColor="#000000" // canvas background (hex)
+  ignoreBelow={0.15} // ignore pixels below this brightness (0~1)
+  invert={true} // invert brightness-to-char mapping
+  manualCharColor={[
+    { char: "$", color: "#ff00ff" },
+    { char: "#", color: "#00ffff" },
+  ]}
 />;
 ```
 
@@ -51,20 +55,21 @@ import AsciiMedia from "ascii-react";
 
 ## 📝 Main Props
 
-| Prop               | Type                          | Default     | Description                                                                   |
-| ------------------ | ----------------------------- | ----------- | ----------------------------------------------------------------------------- |
-| `src`              | `string`                      | -           | Image or video URL to convert                                                 |
-| `mediaType`        | `'image' \| 'video'`          | -           | Media type                                                                    |
-| `resolution`       | `number`                      | 96          | ASCII resolution (number of columns)                                          |
-| `fontSize`         | `number`                      | 8           | Font size (px)                                                                |
-| `charInterval`     | `number`                      | 100         | Frame update interval (ms)                                                    |
-| `color`            | `'auto' \| 'mono' \| #RRGGBB` | 'auto'      | Color mode (original/monochrome/custom color)                                 |
-| `charsRandomLevel` | `'none' \| 'group' \| 'all'`  | 'none'      | ASCII character randomization level                                           |
-| `charList`         | `string[]`                    | default     | ASCII character list                                                          |
-| `charMatrix`       | `string[][]`                  | default     | Brightness-grouped ASCII character matrix                                     |
-| `backgroundColor`  | `string`                      | '#00000000' | Canvas background color (hex value, e.g. '#00000000')                         |
-| `ignoreBelow`      | `number`                      | 0           | Ignore pixels below this brightness (0~1, blank if below)                     |
-| `invert`           | `boolean`                     | false       | Invert brightness-to-ASCII mapping (bright = dense char, dark = blank/sparse) |
+| Prop               | Type                                | Default     | Description                                                                                    |
+| ------------------ | ----------------------------------- | ----------- | ---------------------------------------------------------------------------------------------- |
+| `src`              | `string`                            | -           | Image or video URL to convert                                                                  |
+| `mediaType`        | `'image' \| 'video'`                | -           | Media type                                                                                     |
+| `resolution`       | `number`                            | 96          | ASCII resolution (number of columns)                                                           |
+| `fontSize`         | `number`                            | 8           | Font size (px)                                                                                 |
+| `charInterval`     | `number`                            | 100         | Frame update interval (ms)                                                                     |
+| `color`            | `'auto' \| 'mono' \| #RRGGBB`       | 'auto'      | Color mode (original/monochrome/custom color)                                                  |
+| `charsRandomLevel` | `'none' \| 'group' \| 'all'`        | 'none'      | ASCII character randomization level                                                            |
+| `charList`         | `string[]`                          | default     | ASCII character list                                                                           |
+| `charMatrix`       | `string[][]`                        | default     | Brightness-grouped ASCII character matrix                                                      |
+| `backgroundColor`  | `string`                            | '#00000000' | Canvas background color (hex value, e.g. '#00000000')                                          |
+| `ignoreBelow`      | `number`                            | 0           | Ignore pixels below this brightness (0~1, blank if below)                                      |
+| `invert`           | `boolean`                           | false       | Invert brightness-to-char mapping (dense chars for bright areas)                               |
+| `manualCharColor`  | `{ char: string; color: string }[]` | -           | Array to manually set color for specific chars. Example: `[ { char: '$', color: '#ff00ff' } ]` |
 
 <br />
 

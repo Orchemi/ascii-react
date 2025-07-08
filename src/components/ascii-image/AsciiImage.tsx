@@ -14,6 +14,7 @@ function AsciiImage({
   backgroundColor,
   ignoreBright,
   invert,
+  manualCharColors,
 }: AsciiMediaRequiredProps) {
   const imgRef = useRef<HTMLImageElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -43,7 +44,8 @@ function AsciiImage({
       drawAscii,
       backgroundColor,
       ignoreBright,
-      invert
+      invert,
+      manualCharColors
     );
   }, [
     resolution,
@@ -56,6 +58,7 @@ function AsciiImage({
     backgroundColor,
     ignoreBright,
     invert,
+    manualCharColors,
   ]);
 
   useEffect(() => {

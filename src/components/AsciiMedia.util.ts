@@ -5,6 +5,7 @@ import type {
   CharList,
   CharMatrix,
   HexColor,
+  ManualCharColor,
 } from "./asciiMedia.type";
 
 // 공통 유틸 함수들
@@ -138,7 +139,8 @@ export function drawAsciiChar(
   charList: CharList,
   charMatrix: CharMatrix,
   color: AsciiColor,
-  invert: boolean = false
+  invert: boolean = false,
+  manualCharColors?: ManualCharColor[]
 ) {
   const brightnessNorm = brightness / 255;
   const char = getAsciiChar(
@@ -148,8 +150,31 @@ export function drawAsciiChar(
     charMatrix,
     invert
   );
-  ctx.fillStyle = getAsciiFillStyle(color, r, g, b, brightness);
+  const manualColor = getManualCharColor(char, manualCharColors);
+  if (manualColor) {
+    ctx.fillStyle = manualColor;
+  } else if (color === "auto") {
+    ctx.fillStyle = `rgb(${r},${g},${b})`;
+  } else if (color === "mono") {
+    ctx.fillStyle = `rgb(${brightness},${brightness},${brightness})`;
+  } else if (typeof color === "string" && color.startsWith("#")) {
+    ctx.fillStyle = color;
+  } else {
+    ctx.fillStyle = `rgb(${r},${g},${b})`;
+  }
   ctx.fillText(char ?? " ", x * fontSize, y * fontSize);
+}
+
+/**
+ * manualCharColor에서 해당 char에 대한 색상을 찾는다.
+ */
+function getManualCharColor(
+  char: string,
+  manualCharColor?: { char: string; color: string }[]
+): string | undefined {
+  if (!manualCharColor) return undefined;
+  const found = manualCharColor.find((item) => item.char === char);
+  return found?.color;
 }
 
 /**
@@ -180,7 +205,8 @@ export function drawAsciiFromSource(
   drawAscii: () => void,
   backgroundColor: HexColor,
   ignoreBright: number = 0,
-  invert: boolean = false
+  invert: boolean = false,
+  manualCharColors?: ManualCharColor[]
 ) {
   const aspect =
     "naturalWidth" in source
@@ -235,7 +261,8 @@ export function drawAsciiFromSource(
         charList,
         charMatrix,
         color,
-        invert
+        invert,
+        manualCharColors
       );
     }
   }

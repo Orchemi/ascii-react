@@ -6,7 +6,15 @@ export type CharsRandomLevel = "none" | "group" | "all";
 export type CharList = string[];
 export type CharMatrix = string[][];
 
-export interface AsciiMediaOptionalProps {
+/**
+ * 특정 문자에 수동으로 색상을 지정하는 옵션
+ */
+export type ManualCharColor = {
+  char: string;
+  color: HexColor; // CSS 색상값 (예: '#ff00ff')
+};
+
+export interface AsciiMediaProps {
   /**
    * 변환할 이미지 또는 비디오의 URL
    * @type {string}
@@ -85,11 +93,15 @@ export interface AsciiMediaOptionalProps {
    * true: 밝기와 문자 매핑을 반전시킴 (밝은 곳에 진한 문자, 어두운 곳에 공백/획수 적은 문자)
    */
   invert?: boolean;
+  /**
+   * 특정 문자에 수동으로 색상을 지정하는 배열. 예: [{ char: '$', color: '#ff00ff' }]
+   */
+  manualCharColors?: ManualCharColor[];
 }
 
 /**
  * mediaType을 제외한 모든 옵션을 필수로 갖는 타입
  */
 export type AsciiMediaRequiredProps = Required<
-  Omit<AsciiMediaOptionalProps, "mediaType">
+  Omit<AsciiMediaProps, "mediaType">
 >;

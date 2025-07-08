@@ -5,9 +5,9 @@ import {
   defaultCharList,
   defaultCharMatrix,
 } from "./asciiMedia.constant";
-import type { AsciiMediaOptionalProps } from "./asciiMedia.type";
+import type { AsciiMediaProps } from "./asciiMedia.type";
 
-export default function AsciiMedia(props: AsciiMediaOptionalProps) {
+export default function AsciiMedia(props: AsciiMediaProps) {
   const { mediaType, ...optionalRest } = props;
   const {
     resolution = 96,
@@ -18,6 +18,7 @@ export default function AsciiMedia(props: AsciiMediaOptionalProps) {
     charList = defaultCharList,
     charMatrix = defaultCharMatrix,
     backgroundColor = defaultBackgroundColor,
+    manualCharColors = [],
   } = optionalRest;
   const ignoreBright = props.ignoreBright ?? 0;
   const invert = props.invert ?? false;
@@ -34,6 +35,7 @@ export default function AsciiMedia(props: AsciiMediaOptionalProps) {
     backgroundColor,
     ignoreBright,
     invert,
+    manualCharColors,
   };
 
   if (mediaType === "image") {
