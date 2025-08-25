@@ -12,7 +12,7 @@
 
 This README is available in:
 
-- [한국어](./README.ko.md)
+- [한국어](https://github.com/Orchemi/ascii-react/blob/main/README.ko.md)
 - English
 
 <br />
@@ -31,7 +31,7 @@ This README is available in:
 ## ⚙️ Usage
 
 ```tsx
-import AsciiMedia from "ascii-react";
+import { AsciiMedia } from "ascii-react";
 
 <AsciiMedia
   src="https://example.com/image.png"
