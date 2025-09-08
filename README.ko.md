@@ -13,7 +13,7 @@
 이 README는 다음 언어로도 제공됩니다.
 
 - 한국어
-- [English](./README.md)
+- [English](https://github.com/Orchemi/ascii-react/blob/main/README.md)
 
 <br />
 
@@ -31,7 +31,7 @@
 ## ⚙️ 사용법
 
 ```tsx
-import AsciiMedia from "ascii-react";
+import { AsciiMedia } from "ascii-react";
 
 <AsciiMedia
   src="https://example.com/image.png"
@@ -40,6 +40,7 @@ import AsciiMedia from "ascii-react";
   fontSize={8} // 폰트 크기(px)
   charInterval={100} // 프레임 갱신 간격(ms)
   color="auto" // 'auto' | 'mono' | '#RRGGBB'
+  opacity={0.6} // 문자 투명도 (0~1). manualCharColors가 지정된 문자는 무시
   charsRandomLevel="none" // 'none' | 'group' | 'all'
   backgroundColor="#000000" // 캔버스 배경색(hex)
   ignoreBelow={0.15} // 이 밝기 미만은 공백(무시) 처리 (0~1)
@@ -63,6 +64,7 @@ import AsciiMedia from "ascii-react";
 | `fontSize`         | `number`                            | 8           | 폰트 크기(px)                                                                        |
 | `charInterval`     | `number`                            | 100         | 프레임 갱신 간격(ms)                                                                 |
 | `color`            | `'auto' \| 'mono' \| #RRGGBB`       | 'auto'      | 색상 처리 방식(원본/흑백/단일색상)                                                   |
+| `opacity`          | `number`                            | 1           | 문자 투명도 (0~1). `manualCharColors`에 해당 문자가 있으면 투명도 무시               |
 | `charsRandomLevel` | `'none' \| 'group' \| 'all'`        | 'none'      | 아스키 문자 랜덤화 수준                                                              |
 | `charList`         | `string[]`                          | 기본셋      | 사용할 아스키 문자 리스트                                                            |
 | `charMatrix`       | `string[][]`                        | 기본셋      | 밝기 그룹별 아스키 문자 매트릭스                                                     |

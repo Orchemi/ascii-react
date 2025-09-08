@@ -8,6 +8,7 @@ function AsciiImage({
   fontSize,
   charInterval,
   color = "auto",
+  opacity,
   charsRandomLevel,
   charList,
   charMatrix,
@@ -45,13 +46,15 @@ function AsciiImage({
       backgroundColor,
       ignoreBright,
       invert,
-      manualCharColors
+      manualCharColors,
+      opacity
     );
   }, [
     resolution,
     fontSize,
     charInterval,
     color,
+    opacity,
     charsRandomLevel,
     charList,
     charMatrix,

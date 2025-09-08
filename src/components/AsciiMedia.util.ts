@@ -139,6 +139,7 @@ export function drawAsciiChar(
   charList: CharList,
   charMatrix: CharMatrix,
   color: AsciiColor,
+  opacity: number = 1,
   invert: boolean = false,
   manualCharColors?: ManualCharColor[]
 ) {
@@ -152,8 +153,16 @@ export function drawAsciiChar(
   );
   const manualColor = getManualCharColor(char, manualCharColors);
   if (manualColor) {
+    // manualCharColors가 지정된 문자는 opacity를 무시(=완전 불투명)
+    const hadOpacity = opacity < 1;
+    if (hadOpacity) ctx.globalAlpha = 1;
     ctx.fillStyle = manualColor;
-  } else if (color === "auto") {
+    ctx.fillText(char ?? " ", x * fontSize, y * fontSize);
+    if (hadOpacity) ctx.globalAlpha = Math.max(0, Math.min(1, opacity));
+    return;
+  }
+  // 일반 문자는 이미 프레임 단위로 globalAlpha가 설정되어 있으므로 색상만 지정
+  if (color === "auto") {
     ctx.fillStyle = `rgb(${r},${g},${b})`;
   } else if (color === "mono") {
     ctx.fillStyle = `rgb(${brightness},${brightness},${brightness})`;
@@ -206,7 +215,8 @@ export function drawAsciiFromSource(
   backgroundColor: HexColor,
   ignoreBright: number = 0,
   invert: boolean = false,
-  manualCharColors?: ManualCharColor[]
+  manualCharColors?: ManualCharColor[],
+  opacity: number = 1
 ) {
   const aspect =
     "naturalWidth" in source
@@ -236,6 +246,9 @@ export function drawAsciiFromSource(
   ctx.textBaseline = "top";
   ctx.textAlign = "left";
   ctx.font = `${fontSize}px monospace`;
+  // 프레임 전체에 동일하게 적용될 투명도 설정(수동 색상 문자는 개별 override)
+  const clampedOpacity = Math.max(0, Math.min(1, opacity));
+  ctx.globalAlpha = clampedOpacity;
   let i = 0;
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++, i++) {
@@ -261,10 +274,13 @@ export function drawAsciiFromSource(
         charList,
         charMatrix,
         color,
+        opacity,
         invert,
         manualCharColors
       );
     }
   }
+  // 다음 프레임 및 다른 그리기에 영향 없도록 원복
+  ctx.globalAlpha = 1;
   animationId.current = window.setTimeout(drawAscii, charInterval);
 }

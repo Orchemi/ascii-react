@@ -94,6 +94,12 @@ export interface AsciiMediaProps {
    */
   invert?: boolean;
   /**
+   * 아스키 문자의 투명도 (0~1)
+   * @default 1
+   * manualCharColors가 적용된 문자는 이 투명도를 무시합니다.
+   */
+  opacity?: number;
+  /**
    * 특정 문자에 수동으로 색상을 지정하는 배열. 예: [{ char: '$', color: '#ff00ff' }]
    */
   manualCharColors?: ManualCharColor[];
