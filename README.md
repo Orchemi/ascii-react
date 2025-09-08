@@ -40,6 +40,7 @@ import { AsciiMedia } from "ascii-react";
   fontSize={8} // font size (px)
   charInterval={100} // frame update interval (ms)
   color="auto" // 'auto' | 'mono' | '#RRGGBB'
+  opacity={0.6} // per-char opacity (0~1); ignored for manualCharColors
   charsRandomLevel="none" // 'none' | 'group' | 'all'
   backgroundColor="#000000" // canvas background (hex)
   ignoreBelow={0.15} // ignore pixels below this brightness (0~1)
@@ -63,6 +64,7 @@ import { AsciiMedia } from "ascii-react";
 | `fontSize`         | `number`                            | 8           | Font size (px)                                                                                 |
 | `charInterval`     | `number`                            | 100         | Frame update interval (ms)                                                                     |
 | `color`            | `'auto' \| 'mono' \| #RRGGBB`       | 'auto'      | Color mode (original/monochrome/custom color)                                                  |
+| `opacity`          | `number`                            | 1           | Per-char opacity (0~1). Ignored when a char matches `manualCharColors`.                        |
 | `charsRandomLevel` | `'none' \| 'group' \| 'all'`        | 'none'      | ASCII character randomization level                                                            |
 | `charList`         | `string[]`                          | default     | ASCII character list                                                                           |
 | `charMatrix`       | `string[][]`                        | default     | Brightness-grouped ASCII character matrix                                                      |
